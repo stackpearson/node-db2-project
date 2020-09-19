@@ -1,7 +1,8 @@
 const knex = require('knex');
 
-const knexConfig = require('../knexfile.js');
+const config = require('../knexfile.js');
 
-const configuredKnex = knex(knexConfig.development);
+const db = knex(config.development);
+//setting this up here allows us to remove it from our router
 
-module.exports = configuredKnex;
+module.exports = db;
