@@ -15,4 +15,30 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/:id', (req, res) => {
+    const {id} = req.params;
+
+    db('cars').where({id}).first()
+    .then(car => {
+        res.json(car);
+    })
+    .catch(err => {
+        res.status(500).json({message: 'cannot retrieve car'})
+    })
+})
+
+router.post('/', (req, res) => {
+    const carInfo = req.body;
+
+    db('cars').insert(carInfo)
+    .then(ids => {
+        db('cars').where({ id: ids[0] })
+        .then(newCarEntry => {
+            res.status(201).json(newCarEntry);
+        });
+    })
+    .catch(err => {
+        res.status(500).json({message: 'cannot save car'})
+    })
+})
 module.exports = router;
